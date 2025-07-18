@@ -54,7 +54,7 @@ export default function ResetPasswordPage() {
   const [password, setPassword] = useState('')
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { isMockMode } = useAuthContext()
+  const { isMockMode, user, session } = useAuthContext()
 
   const {
     register,
@@ -68,22 +68,28 @@ export default function ResetPasswordPage() {
   const watchedPassword = watch('password', '')
   const passwordStrength = checkPasswordStrength(watchedPassword)
 
-  // Get token from URL
+  // Get token and type from URL (for direct access)
   const token = searchParams.get('token')
   const type = searchParams.get('type')
 
   useEffect(() => {
-    if (!token || type !== 'recovery') {
-      setError('Invalid or missing reset token. Please request a new password reset.')
-    }
-  }, [token, type])
-
-  const onSubmit = async (data: ResetPasswordFormData) => {
-    if (!token) {
-      setError('Invalid reset token')
+    // If we have a session and user, we can proceed with password reset
+    if (user && session) {
       return
     }
 
+    // If we have token and type in URL, that's fine too
+    if (token && type === 'recovery') {
+      return
+    }
+
+    // If we don't have either, show error
+    if (!user && !token) {
+      setError('Invalid or missing reset token. Please request a new password reset.')
+    }
+  }, [user, session, token, type])
+
+  const onSubmit = async (data: ResetPasswordFormData) => {
     setIsLoading(true)
     setError(null)
 
@@ -96,7 +102,8 @@ export default function ResetPasswordPage() {
         return
       }
 
-      // TODO: Implement real password reset when Supabase is configured
+      // For real implementation, we can use the session directly
+      // since Supabase already authenticated the user
       const response = await fetch('/api/auth/update-password', {
         method: 'POST',
         headers: {
@@ -104,7 +111,7 @@ export default function ResetPasswordPage() {
         },
         body: JSON.stringify({ 
           password: data.password,
-          token 
+          token: token || 'session' // Use session if no token
         }),
       })
 
@@ -166,7 +173,7 @@ export default function ResetPasswordPage() {
         </div>
       )}
 
-      {error && !token && (
+      {error && !token && !user && (
         <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
           <p className="text-sm text-red-800">{error}</p>
           <div className="mt-3">
@@ -181,7 +188,7 @@ export default function ResetPasswordPage() {
         </div>
       )}
 
-      {token && (
+      {(token || user) && (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="password">New Password</Label>
