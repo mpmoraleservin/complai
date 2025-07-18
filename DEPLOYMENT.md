@@ -12,24 +12,36 @@
 
 #### Required Variables for Production
 
+**IMPORTANT**: You must configure these environment variables in your Vercel project settings. The build will fail without them.
+
 Configure these environment variables in your Vercel project settings:
 
 ```bash
-# Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+# Supabase Configuration (REQUIRED for basic functionality)
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
-# OpenAI Configuration
-OPENAI_API_KEY=your_openai_api_key
+# OpenAI Configuration (OPTIONAL - for Contract Generator)
+OPENAI_API_KEY=sk-...
 
-# Pinecone Configuration
+# Pinecone Configuration (OPTIONAL - for AI Auditor)
 PINECONE_API_KEY=your_pinecone_api_key
 PINECONE_INDEX_NAME=complai-legal-embeddings
 
-# PandaDoc Configuration
+# PandaDoc Configuration (OPTIONAL - for E-Signatures)
 PANDADOC_API_KEY=your_pandadoc_api_key
 ```
+
+#### Where to Find Your Supabase Credentials
+
+1. **Go to your Supabase Dashboard**: https://supabase.com/dashboard
+2. **Select your project**
+3. **Go to Settings** → **API**
+4. **Copy the values**:
+   - **Project URL**: `https://your-project-id.supabase.co`
+   - **anon public**: The public API key
+   - **service_role secret**: The service role key (keep this secret!)
 
 #### How to Set Environment Variables in Vercel
 
@@ -125,6 +137,27 @@ curl https://your-app.vercel.app/api/health
 1. Ensure all environment variables are set in Vercel
 2. Check that variable names match exactly (case-sensitive)
 3. Redeploy after adding variables
+
+**Error**: "Environment Variable references Secret which does not exist"
+
+**Solution**:
+
+1. Go to your Vercel project dashboard
+2. Navigate to **Settings** → **Environment Variables**
+3. Add each variable manually (don't use secrets):
+   - Name: `NEXT_PUBLIC_SUPABASE_URL`
+   - Value: `https://your-project-id.supabase.co`
+   - Environment: Production
+4. Repeat for all required variables
+5. Redeploy the project
+
+**Error**: "Build fails during static generation"
+
+**Solution**:
+
+1. The app now handles missing env vars gracefully
+2. Ensure at least Supabase variables are set for full functionality
+3. Optional variables can be added later as features are developed
 
 #### Runtime Errors
 
