@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { AuthLayout } from '@/components/auth/auth-layout'
 import { cn } from '@/lib/utils'
+import { Logo } from '@/components/ui/logo'
 
 export default function OnboardingPage() {
   const [step, setStep] = useState(1)

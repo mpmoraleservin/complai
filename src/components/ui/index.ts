@@ -1,0 +1,1 @@
+export { Logo, LogoMinimal } from './logo' 

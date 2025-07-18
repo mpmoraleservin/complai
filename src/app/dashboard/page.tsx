@@ -5,25 +5,28 @@ import { Button } from '@/components/ui/button'
 import { ProtectedRoute } from '@/components/auth/protected-route'
 import { useAuthContext } from '@/lib/context/auth-context'
 import { LogOut, User } from 'lucide-react'
+import { Logo } from '@/components/ui/logo'
+import { DashboardLayout } from '@/components/layout/dashboard-layout'
 
 export default function DashboardPage() {
-  const { user, signOut, isMockMode } = useAuthContext()
-
-  const handleSignOut = async () => {
-    await signOut()
-  }
+  const { user, isMockMode } = useAuthContext()
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50 p-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Header with user info */}
-          <div className="mb-8 flex justify-between items-start">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Welcome to COMPLai</h1>
-              <p className="text-gray-600 mt-2">
-                Your AI-powered employment contract compliance platform
-              </p>
+      <DashboardLayout>
+        <div className="p-6">
+          <div className="max-w-7xl mx-auto">
+            {/* Header with user info */}
+            <div className="mb-8">
+              <div className="flex items-center mb-4">
+                <Logo size="lg" className="mr-3" />
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900">Welcome to COMPLai</h1>
+                  <p className="text-gray-600 mt-1">
+                    Your AI-powered employment contract compliance platform
+                  </p>
+                </div>
+              </div>
               {user && (
                 <div className="flex items-center mt-3 text-sm text-gray-500">
                   <User className="w-4 h-4 mr-2" />
@@ -36,15 +39,6 @@ export default function DashboardPage() {
                 </div>
               )}
             </div>
-            <Button 
-              variant="outline" 
-              onClick={handleSignOut}
-              className="flex items-center"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
-            </Button>
-          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card>
@@ -189,7 +183,8 @@ export default function DashboardPage() {
             </Card>
           </div>
         </div>
-      </div>
+        </div>
+      </DashboardLayout>
     </ProtectedRoute>
   )
 } 

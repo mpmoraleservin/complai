@@ -9,6 +9,11 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'COMPLai - AI-powered Employment Contract Compliance',
   description: 'Generate and audit employment contracts with AI-powered compliance checking for U.S. labor laws.',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({
