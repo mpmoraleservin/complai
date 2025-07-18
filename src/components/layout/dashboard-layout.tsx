@@ -42,7 +42,7 @@ export function DashboardLayout({ children, className }: DashboardLayoutProps) {
       </div>
 
       {/* Main content - Below header, with sidebar offset */}
-      <div className="pt-16 md:pl-64">
+      <div className="md:pl-64">
         {/* Page content */}
         <main className={className}>
           {children}

@@ -10,13 +10,10 @@ import {
   BarChart3, 
   Home,
   FileCheck,
-  X,
-  LogOut
+  X
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useAuthContext } from '@/lib/context/auth-context'
-import { useState } from 'react'
 
 interface SidebarProps {
   className?: string
@@ -35,34 +32,6 @@ const navigation = [
 
 export function Sidebar({ className, onClose, isMobile }: SidebarProps) {
   const pathname = usePathname()
-  const { signOut } = useAuthContext()
-  const [isSigningOut, setIsSigningOut] = useState(false)
-
-  const handleSignOut = async () => {
-    // Show confirmation dialog
-    const confirmed = window.confirm('Are you sure you want to sign out?')
-    if (!confirmed) return
-
-    setIsSigningOut(true)
-    
-    try {
-      const { error } = await signOut()
-      
-      if (error) {
-        console.error('Sign out error:', error)
-        alert('Failed to sign out. Please try again.')
-        return
-      }
-
-      // Redirect to login page
-      window.location.href = '/auth/login'
-    } catch (error) {
-      console.error('Unexpected sign out error:', error)
-      alert('An unexpected error occurred while signing out.')
-    } finally {
-      setIsSigningOut(false)
-    }
-  }
 
   return (
     <div className={cn('flex flex-col bg-white border-r border-gray-200 w-64 h-full', className)}>
@@ -108,20 +77,6 @@ export function Sidebar({ className, onClose, isMobile }: SidebarProps) {
           )
         })}
       </nav>
-
-      {/* Sign Out Button */}
-      <div className="p-4 border-t border-gray-200">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleSignOut}
-          disabled={isSigningOut}
-          className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
-        >
-          <LogOut className="w-4 h-4 mr-3" />
-          {isSigningOut ? 'Signing out...' : 'Sign Out'}
-        </Button>
-      </div>
 
       {/* Footer */}
       <div className="p-4 border-t border-gray-200">
