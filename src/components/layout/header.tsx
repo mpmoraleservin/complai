@@ -8,9 +8,10 @@ import { useState } from 'react'
 
 interface HeaderProps {
   className?: string
+  onMenuClick?: () => void
 }
 
-export function Header({ className }: HeaderProps) {
+export function Header({ className, onMenuClick }: HeaderProps) {
   const { user, signOut, isMockMode } = useAuthContext()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -21,7 +22,7 @@ export function Header({ className }: HeaderProps) {
   return (
     <header className={`bg-white border-b border-gray-200 px-4 py-3 ${className}`}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* Logo and Brand */}
+        {/* Logo and Brand - Left side */}
         <div className="flex items-center space-x-4">
           <Logo size="md" />
           <div className="hidden md:block">
@@ -31,7 +32,7 @@ export function Header({ className }: HeaderProps) {
           </div>
         </div>
 
-        {/* Navigation and User Menu */}
+        {/* Navigation and User Menu - Right side */}
         <div className="flex items-center space-x-4">
           {/* User Info */}
           {user && (
@@ -64,7 +65,7 @@ export function Header({ className }: HeaderProps) {
             variant="ghost"
             size="sm"
             className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={onMenuClick || (() => setIsMenuOpen(!isMenuOpen))}
           >
             <Menu className="w-5 h-5" />
           </Button>

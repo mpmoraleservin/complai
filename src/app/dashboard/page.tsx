@@ -4,8 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { ProtectedRoute } from '@/components/auth/protected-route'
 import { useAuthContext } from '@/lib/context/auth-context'
-import { LogOut, User } from 'lucide-react'
-import { Logo } from '@/components/ui/logo'
+import { User } from 'lucide-react'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 
 export default function DashboardPage() {
@@ -16,19 +15,14 @@ export default function DashboardPage() {
       <DashboardLayout>
         <div className="p-6">
           <div className="max-w-7xl mx-auto">
-            {/* Header with user info */}
+            {/* Simple Welcome Header */}
             <div className="mb-8">
-              <div className="flex items-center mb-4">
-                <Logo size="lg" className="mr-3" />
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900">Welcome to COMPLai</h1>
-                  <p className="text-gray-600 mt-1">
-                    Your AI-powered employment contract compliance platform
-                  </p>
-                </div>
-              </div>
+              <h1 className="text-3xl font-bold text-gray-900">Welcome to COMPLai</h1>
+              <p className="text-gray-600 mt-2">
+                Your AI-powered employment contract compliance platform
+              </p>
               {user && (
-                <div className="flex items-center mt-3 text-sm text-gray-500">
+                <div className="flex items-center mt-4 text-sm text-gray-500">
                   <User className="w-4 h-4 mr-2" />
                   {user.email}
                   {isMockMode && (

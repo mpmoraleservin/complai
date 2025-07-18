@@ -78,8 +78,9 @@ export function Logo({ className, size = 'md', variant = 'default' }: LogoProps)
 }
 
 // Alternative minimal logo for small spaces
-export function LogoMinimal({ className, size = 'md' }: { className?: string; size?: 'sm' | 'md' | 'lg' }) {
+export function LogoMinimal({ className, size = 'md' }: { className?: string; size?: 'sm' | 'md' | 'lg' | 'xs' }) {
   const sizeClasses = {
+    xs: 'h-4 w-4',
     sm: 'h-5 w-5',
     md: 'h-6 w-6',
     lg: 'h-8 w-8'

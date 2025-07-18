@@ -15,7 +15,9 @@ export function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
   const router = useRouter()
 
   useEffect(() => {
+    console.log('ProtectedRoute - User:', user?.email, 'Loading:', loading, 'MockMode:', isMockMode)
     if (!loading && !user && !isMockMode) {
+      console.log('ProtectedRoute - Redirecting to login')
       router.push('/auth/login')
     }
   }, [user, loading, isMockMode, router])

@@ -10,13 +10,21 @@ const hasValidEnvVars = supabaseUrl &&
                        supabaseUrl !== 'your_supabase_url' && 
                        supabaseAnonKey !== 'your_supabase_anon_key'
 
+// Singleton instance
+let supabaseInstance: any = null
+
 export const createClient = () => {
+  // Return existing instance if available
+  if (supabaseInstance) {
+    return supabaseInstance
+  }
+
   // If we're in development and don't have valid env vars, use mock mode
   if (isDevelopmentMode && !hasValidEnvVars) {
     console.warn('⚠️ Supabase environment variables not configured. Using development mock mode.')
     
-    // Return a comprehensive mock client for development
-    return {
+    // Create and store mock client
+    supabaseInstance = {
       auth: {
         signInWithPassword: async (credentials: any) => {
           console.log('🔐 Mock: Sign in with password', credentials)
@@ -99,6 +107,19 @@ export const createClient = () => {
           console.log('📧 Mock: Resend verification', params)
           return { error: null }
         },
+        getSession: async () => {
+          console.log('🔍 Mock: Get session')
+          return { 
+            data: { 
+              session: {
+                access_token: 'mock-access-token',
+                refresh_token: 'mock-refresh-token',
+                expires_at: Date.now() + 3600000
+              }
+            }, 
+            error: null 
+          }
+        },
         onAuthStateChange: (callback: any) => {
           console.log('🔄 Mock: Auth state change listener registered')
           return { data: { subscription: { unsubscribe: () => {} } } }
@@ -126,12 +147,15 @@ export const createClient = () => {
         })
       }
     } as any
+    
+    return supabaseInstance
   }
 
   // If we have valid environment variables, create the real client
   if (hasValidEnvVars) {
     try {
-      return createSupabaseClient(supabaseUrl, supabaseAnonKey)
+      supabaseInstance = createSupabaseClient(supabaseUrl, supabaseAnonKey)
+      return supabaseInstance
     } catch (error) {
       console.error('❌ Error creating Supabase client:', error)
       throw new Error('Failed to create Supabase client')

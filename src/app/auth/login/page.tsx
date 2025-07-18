@@ -26,7 +26,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
-  const { signIn, isMockMode } = useAuthContext()
+  const { signIn, isMockMode, user, session } = useAuthContext()
 
   // Check for error in URL params (from callback)
   useEffect(() => {
@@ -38,6 +38,14 @@ export default function LoginPage() {
       window.history.replaceState({}, document.title, window.location.pathname)
     }
   }, [])
+
+  // Auto-redirect when user is authenticated
+  useEffect(() => {
+    if (user && session) {
+      console.log('User authenticated, redirecting to dashboard...')
+      router.push('/dashboard')
+    }
+  }, [user, session, router])
 
   const {
     register,
@@ -56,13 +64,14 @@ export default function LoginPage() {
 
       if (error) {
         setError(error.message)
+        setIsLoading(false)
         return
       }
 
-      router.push('/dashboard')
+      // The useEffect will handle the redirect automatically
+      console.log('Sign in successful, waiting for auth state update...')
     } catch (err) {
       setError('An unexpected error occurred')
-    } finally {
       setIsLoading(false)
     }
   }

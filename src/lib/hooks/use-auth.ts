@@ -26,7 +26,11 @@ export function useAuth() {
   useEffect(() => {
     // Check if we're in mock mode
     const isMockMode = !process.env.NEXT_PUBLIC_SUPABASE_URL || 
-                      process.env.NEXT_PUBLIC_SUPABASE_URL === 'your_supabase_url'
+                      process.env.NEXT_PUBLIC_SUPABASE_URL === 'your_supabase_url' ||
+                      process.env.NEXT_PUBLIC_SUPABASE_URL === ''
+
+    console.log('Auth hook - Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+    console.log('Auth hook - Is mock mode:', isMockMode)
 
     // Get initial session
     const getInitialSession = async () => {
@@ -84,15 +88,20 @@ export function useAuth() {
   }, [supabase.auth])
 
   const signIn = async (email: string, password: string) => {
+    console.log('SignIn called with email:', email)
     setAuthState(prev => ({ ...prev, loading: true, error: null }))
     
     try {
+      console.log('Attempting to sign in with Supabase...')
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       })
 
+      console.log('SignIn result:', { data: !!data, error: error?.message })
+
       if (error) {
+        console.error('SignIn error:', error)
         setAuthState(prev => ({
           ...prev,
           error: error.message,
@@ -101,6 +110,7 @@ export function useAuth() {
         return { error }
       }
 
+      console.log('SignIn successful, user:', data.user?.email)
       return { data }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Sign in failed'
