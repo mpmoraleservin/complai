@@ -10,7 +10,7 @@ interface AuthContextType {
   loading: boolean
   error: string | null
   isMockMode: boolean
-  signIn: (email: string, password: string) => Promise<{ data?: any; error?: any }>
+  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ data?: any; error?: any }>
   signUp: (email: string, password: string) => Promise<{ data?: any; error?: any }>
   signOut: () => Promise<{ error?: any }>
   verifyOtp: (email: string, token: string) => Promise<{ data?: any; error?: any }>

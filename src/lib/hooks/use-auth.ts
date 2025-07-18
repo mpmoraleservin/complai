@@ -87,8 +87,8 @@ export function useAuth() {
     }
   }, [supabase.auth])
 
-  const signIn = async (email: string, password: string) => {
-    console.log('SignIn called with email:', email)
+  const signIn = async (email: string, password: string, rememberMe: boolean = false) => {
+    console.log('SignIn called with email:', email, 'rememberMe:', rememberMe)
     setAuthState(prev => ({ ...prev, loading: true, error: null }))
     
     try {
@@ -108,6 +108,21 @@ export function useAuth() {
           loading: false
         }))
         return { error }
+      }
+
+      // If rememberMe is true, set a longer session duration
+      if (rememberMe && data.session) {
+        // Set session to persist for 30 days
+        await supabase.auth.setSession({
+          access_token: data.session.access_token,
+          refresh_token: data.session.refresh_token
+        })
+        
+        // Store remember me preference in localStorage
+        localStorage.setItem('complai_remember_me', 'true')
+      } else {
+        // Clear remember me preference
+        localStorage.removeItem('complai_remember_me')
       }
 
       console.log('SignIn successful, user:', data.user?.email)

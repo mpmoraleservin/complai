@@ -13,6 +13,7 @@ import { AuthLayout } from '@/components/auth/auth-layout'
 import { SocialAuthButton } from '@/components/auth/social-auth-button'
 import { useAuthContext } from '@/lib/context/auth-context'
 import { cn } from '@/lib/utils'
+import { Eye, EyeOff } from 'lucide-react'
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -25,6 +26,7 @@ type LoginFormData = z.infer<typeof loginSchema>
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
   const { signIn, isMockMode, user, session } = useAuthContext()
 
@@ -51,16 +53,23 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
+
+  // Load remember me preference from localStorage
+  useEffect(() => {
+    const remembered = localStorage.getItem('complai_remember_me') === 'true'
+    setValue('rememberMe', remembered)
+  }, [setValue])
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true)
     setError(null)
 
     try {
-      const { error } = await signIn(data.email, data.password)
+      const { error } = await signIn(data.email, data.password, data.rememberMe)
 
       if (error) {
         setError(error.message)
@@ -120,16 +129,29 @@ export default function LoginPage() {
 
         <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            placeholder="••••••••"
-            className={cn(
-              'w-full px-3 py-2 border rounded-md',
-              errors.password && 'border-red-500'
-            )}
-            {...register('password')}
-          />
+          <div className="relative">
+            <Input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="••••••••"
+              className={cn(
+                'w-full px-3 py-2 pr-10 border rounded-md',
+                errors.password && 'border-red-500'
+              )}
+              {...register('password')}
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 flex items-center pr-3"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <EyeOff className="h-4 w-4 text-gray-400" />
+              ) : (
+                <Eye className="h-4 w-4 text-gray-400" />
+              )}
+            </button>
+          </div>
           {errors.password && (
             <p className="text-sm text-red-500">{errors.password.message}</p>
           )}
@@ -137,16 +159,23 @@ export default function LoginPage() {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Checkbox id="remember" {...register('rememberMe')} />
-            <Label htmlFor="remember" className="text-sm text-gray-600">
+            <Checkbox 
+              id="remember" 
+              {...register('rememberMe')}
+              className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+            />
+            <Label 
+              htmlFor="remember" 
+              className="text-sm text-gray-600 cursor-pointer select-none"
+            >
               Remember for 30 days
             </Label>
           </div>
           <a
             href="/auth/forgot-password"
-            className="text-sm text-purple-500 hover:text-purple-600"
+            className="text-sm text-purple-500 hover:text-purple-600 transition-colors"
           >
-            Forgot password
+            Forgot password?
           </a>
         </div>
 

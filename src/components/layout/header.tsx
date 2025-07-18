@@ -14,9 +14,32 @@ interface HeaderProps {
 export function Header({ className, onMenuClick }: HeaderProps) {
   const { user, signOut, isMockMode } = useAuthContext()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isSigningOut, setIsSigningOut] = useState(false)
 
   const handleSignOut = async () => {
-    await signOut()
+    // Show confirmation dialog
+    const confirmed = window.confirm('Are you sure you want to sign out?')
+    if (!confirmed) return
+
+    setIsSigningOut(true)
+    
+    try {
+      const { error } = await signOut()
+      
+      if (error) {
+        console.error('Sign out error:', error)
+        alert('Failed to sign out. Please try again.')
+        return
+      }
+
+      // Redirect to login page
+      window.location.href = '/auth/login'
+    } catch (error) {
+      console.error('Unexpected sign out error:', error)
+      alert('An unexpected error occurred while signing out.')
+    } finally {
+      setIsSigningOut(false)
+    }
   }
 
   return (
@@ -54,10 +77,13 @@ export function Header({ className, onMenuClick }: HeaderProps) {
             variant="outline"
             size="sm"
             onClick={handleSignOut}
+            disabled={isSigningOut}
             className="flex items-center"
           >
             <LogOut className="w-4 h-4 mr-2" />
-            <span className="hidden sm:inline">Sign Out</span>
+            <span className="hidden sm:inline">
+              {isSigningOut ? 'Signing out...' : 'Sign Out'}
+            </span>
           </Button>
 
           {/* Mobile Menu Button */}
@@ -90,4 +116,4 @@ export function Header({ className, onMenuClick }: HeaderProps) {
       )}
     </header>
   )
-} 
+}
