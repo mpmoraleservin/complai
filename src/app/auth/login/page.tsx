@@ -14,6 +14,7 @@ import { SocialAuthButton } from '@/components/auth/social-auth-button'
 import { useAuthContext } from '@/lib/context/auth-context'
 import { cn } from '@/lib/utils'
 import { Eye, EyeOff } from 'lucide-react'
+import Link from 'next/link'
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -171,12 +172,12 @@ export default function LoginPage() {
               Remember for 30 days
             </Label>
           </div>
-          <a
+          <Link
             href="/auth/forgot-password"
             className="text-sm text-purple-500 hover:text-purple-600 transition-colors"
           >
             Forgot password?
-          </a>
+          </Link>
         </div>
 
         {error && (
