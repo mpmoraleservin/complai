@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -45,7 +45,7 @@ const checkPasswordStrength = (password: string) => {
   return { rules, passed, total: rules.length, isStrong }
 }
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -139,7 +139,7 @@ export default function ResetPasswordPage() {
       >
         <div className="text-center space-y-4">
           <div className="flex justify-center">
-            <CheckCircle className="w-12 h-12 text-green-500" />
+            <CheckCircle className="w-12 h-12 text-success-500" />
           </div>
           <h3 className="text-lg font-semibold text-gray-900">
             Password updated successfully
@@ -150,7 +150,7 @@ export default function ResetPasswordPage() {
           <div className="pt-4">
             <Link
               href="/auth/login"
-              className="inline-flex items-center justify-center w-full px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 transition-colors"
+              className="inline-flex items-center justify-center w-full px-4 py-2 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition-colors"
             >
               Sign in with new password
             </Link>
@@ -166,20 +166,20 @@ export default function ResetPasswordPage() {
       subtitle="Enter your new password below."
     >
       {isMockMode && (
-        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-          <p className="text-sm text-yellow-800">
+        <div className="mb-4 p-3 bg-warning-50 border border-warning-200 rounded-md">
+          <p className="text-sm text-warning-800">
             <strong>Development Mode:</strong> Password reset is simulated.
           </p>
         </div>
       )}
 
       {error && !token && !user && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-          <p className="text-sm text-red-800">{error}</p>
+        <div className="mb-4 p-3 bg-destructive-50 border border-destructive-200 rounded-md">
+          <p className="text-sm text-destructive-800">{error}</p>
           <div className="mt-3">
             <Link
               href="/auth/forgot-password"
-              className="inline-flex items-center text-sm text-red-600 hover:text-red-700"
+              className="inline-flex items-center text-sm text-destructive-600 hover:text-destructive-700"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Request new reset link
@@ -199,7 +199,7 @@ export default function ResetPasswordPage() {
                 placeholder="••••••••"
                 className={cn(
                   'w-full px-3 py-2 pr-10 border rounded-md',
-                  errors.password && 'border-red-500'
+                  errors.password && 'border-destructive-500'
                 )}
                 {...register('password')}
               />
@@ -216,7 +216,7 @@ export default function ResetPasswordPage() {
               </button>
             </div>
             {errors.password && (
-              <p className="text-sm text-red-500">{errors.password.message}</p>
+              <p className="text-sm text-destructive-500">{errors.password.message}</p>
             )}
 
             {/* Password strength indicator */}
@@ -227,11 +227,11 @@ export default function ResetPasswordPage() {
                   {passwordStrength.rules.map((rule, index) => (
                     <div key={index} className="flex items-center text-xs">
                       {rule.test ? (
-                        <CheckCircle className="w-3 h-3 text-green-500 mr-2" />
+                        <CheckCircle className="w-3 h-3 text-success-500 mr-2" />
                       ) : (
-                        <XCircle className="w-3 h-3 text-red-500 mr-2" />
+                        <XCircle className="w-3 h-3 text-destructive-500 mr-2" />
                       )}
-                      <span className={rule.test ? 'text-green-600' : 'text-red-600'}>
+                      <span className={rule.test ? 'text-success-600' : 'text-destructive-600'}>
                         {rule.name}
                       </span>
                     </div>
@@ -250,7 +250,7 @@ export default function ResetPasswordPage() {
                 placeholder="••••••••"
                 className={cn(
                   'w-full px-3 py-2 pr-10 border rounded-md',
-                  errors.confirmPassword && 'border-red-500'
+                  errors.confirmPassword && 'border-destructive-500'
                 )}
                 {...register('confirmPassword')}
               />
@@ -267,17 +267,17 @@ export default function ResetPasswordPage() {
               </button>
             </div>
             {errors.confirmPassword && (
-              <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>
+              <p className="text-sm text-destructive-500">{errors.confirmPassword.message}</p>
             )}
           </div>
 
           {error && (
-            <div className="text-sm text-red-500 text-center">{error}</div>
+            <div className="text-sm text-destructive-500 text-center">{error}</div>
           )}
 
           <Button
             type="submit"
-            className="w-full bg-purple-500 hover:bg-purple-600 text-white"
+            className="w-full bg-primary-500 hover:bg-primary-600 text-white"
             disabled={isLoading || !passwordStrength.isStrong}
           >
             {isLoading ? 'Resetting password...' : 'Reset password'}
@@ -286,7 +286,7 @@ export default function ResetPasswordPage() {
           <div className="text-center">
             <Link
               href="/auth/login"
-              className="inline-flex items-center text-sm text-purple-500 hover:text-purple-600"
+              className="inline-flex items-center text-sm text-primary-500 hover:text-primary-600"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to login
@@ -295,5 +295,13 @@ export default function ResetPasswordPage() {
         </form>
       )}
     </AuthLayout>
+  )
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
   )
 } 

@@ -27,7 +27,7 @@ export function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin text-purple-600" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
@@ -41,7 +41,7 @@ export function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
     ) : (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin text-purple-600" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
           <p className="text-gray-600">Redirecting to login...</p>
         </div>
       </div>

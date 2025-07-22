@@ -47,11 +47,12 @@ export const createClient = () => {
         },
         signUp: async (credentials: any) => {
           console.log('📝 Mock: Sign up', credentials)
+          const mockUserId = `mock-user-${Date.now()}`
           return { 
             error: null, 
             data: { 
               user: { 
-                id: 'mock-user-id',
+                id: mockUserId,
                 email: credentials.email,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
@@ -135,9 +136,22 @@ export const createClient = () => {
           update: (data: any) => ({ data, error: null }),
           delete: () => ({ data: null, error: null })
         }),
-        insert: (data: any) => ({ data, error: null }),
-        update: (data: any) => ({ data, error: null }),
-        delete: () => ({ data: null, error: null })
+        insert: (data: any) => {
+          console.log(`📝 Mock: Inserting into ${table}:`, data)
+          return { data, error: null }
+        },
+        update: (data: any) => {
+          console.log(`📝 Mock: Updating ${table}:`, data)
+          return { data, error: null }
+        },
+        delete: () => {
+          console.log(`📝 Mock: Deleting from ${table}`)
+          return { data: null, error: null }
+        },
+        upsert: (data: any) => {
+          console.log(`📝 Mock: Upserting into ${table}:`, data)
+          return { data, error: null }
+        }
       }),
       storage: {
         from: (bucket: string) => ({

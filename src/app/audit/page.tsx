@@ -69,14 +69,14 @@ const mockIssues = [
 ]
 
 const statusConfig = {
-  'in-progress': { label: 'In Progress', icon: Clock, color: 'text-yellow-600', bg: 'bg-yellow-100' },
-  completed: { label: 'Completed', icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-100' }
+  'in-progress': { label: 'In Progress', icon: Clock, color: 'text-warning-600', bg: 'bg-warning-100' },
+  completed: { label: 'Completed', icon: CheckCircle, color: 'text-success-600', bg: 'bg-success-100' }
 }
 
 const severityConfig = {
-  high: { label: 'High', color: 'text-red-600', bg: 'bg-red-100' },
-  medium: { label: 'Medium', color: 'text-yellow-600', bg: 'bg-yellow-100' },
-  low: { label: 'Low', color: 'text-blue-600', bg: 'bg-blue-100' }
+  high: { label: 'High', color: 'text-destructive-600', bg: 'bg-destructive-100' },
+  medium: { label: 'Medium', color: 'text-warning-600', bg: 'bg-warning-100' },
+  low: { label: 'Low', color: 'text-info-600', bg: 'bg-info-100' }
 }
 
 export default function AuditPage() {
@@ -93,9 +93,9 @@ export default function AuditPage() {
   }
 
   const getComplianceColor = (score: number) => {
-    if (score >= 90) return 'text-green-600'
-    if (score >= 70) return 'text-yellow-600'
-    return 'text-red-600'
+    if (score >= 90) return 'text-success-600'
+    if (score >= 70) return 'text-warning-600'
+    return 'text-destructive-600'
   }
 
   return (
@@ -109,7 +109,7 @@ export default function AuditPage() {
                 <div>
                   <h1 className="text-3xl font-bold text-gray-900">AI Contract Audit</h1>
                   <p className="text-gray-600 mt-1">
-                    AI-powered compliance checking for employment contracts
+                    AI-powered compliance checking for employment documents
                   </p>
                 </div>
                 <Button className="flex items-center">
@@ -124,8 +124,8 @@ export default function AuditPage() {
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center">
-                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                      <Shield className="w-4 h-4 text-blue-600" />
+                    <div className="w-8 h-8 bg-info-100 rounded-lg flex items-center justify-center mr-3">
+                      <Shield className="w-4 h-4 text-info-600" />
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-600">Total Audits</p>
@@ -138,8 +138,8 @@ export default function AuditPage() {
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center">
-                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                      <CheckCircle className="w-4 h-4 text-green-600" />
+                    <div className="w-8 h-8 bg-success-100 rounded-lg flex items-center justify-center mr-3">
+                      <CheckCircle className="w-4 h-4 text-success-600" />
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-600">Completed</p>
@@ -154,8 +154,8 @@ export default function AuditPage() {
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center">
-                    <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
-                      <Clock className="w-4 h-4 text-yellow-600" />
+                    <div className="w-8 h-8 bg-warning-100 rounded-lg flex items-center justify-center mr-3">
+                      <Clock className="w-4 h-4 text-warning-600" />
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-600">In Progress</p>
@@ -170,8 +170,8 @@ export default function AuditPage() {
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center">
-                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-                      <TrendingUp className="w-4 h-4 text-purple-600" />
+                    <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                      <TrendingUp className="w-4 h-4 text-primary-600" />
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-600">Avg. Score</p>
@@ -242,7 +242,7 @@ export default function AuditPage() {
                             key={audit.id}
                             className={`p-3 rounded-lg border cursor-pointer transition-colors ${
                               selectedAudit === audit.id 
-                                ? 'border-purple-300 bg-purple-50' 
+                                ? 'border-primary-300 bg-primary-50' 
                                 : 'border-gray-200 hover:border-gray-300'
                             }`}
                             onClick={() => setSelectedAudit(audit.id)}
@@ -300,10 +300,10 @@ export default function AuditPage() {
                         <div className="bg-gray-50 rounded-lg p-4">
                           <div className="flex items-center justify-between mb-2">
                             <h3 className="font-medium text-gray-900">Overall Compliance Score</h3>
-                            <span className="text-2xl font-bold text-green-600">95%</span>
+                            <span className="text-2xl font-bold text-success-600">95%</span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div className="bg-green-600 h-2 rounded-full" style={{ width: '95%' }}></div>
+                            <div className="bg-success-600 h-2 rounded-full" style={{ width: '95%' }}></div>
                           </div>
                           <p className="text-sm text-gray-600 mt-2">
                             This contract is highly compliant with California employment laws.
@@ -328,9 +328,9 @@ export default function AuditPage() {
                                     <span className="text-xs text-gray-500">{issue.section}</span>
                                   </div>
                                   <p className="text-sm text-gray-600 mb-2">{issue.description}</p>
-                                  <div className="bg-blue-50 border border-blue-200 rounded p-3">
-                                    <p className="text-sm font-medium text-blue-900 mb-1">Recommendation:</p>
-                                    <p className="text-sm text-blue-800">{issue.recommendation}</p>
+                                  <div className="bg-info-50 border border-info-200 rounded p-3">
+                                    <p className="text-sm font-medium text-info-900 mb-1">Recommendation:</p>
+                                    <p className="text-sm text-info-800">{issue.recommendation}</p>
                                   </div>
                                 </div>
                               )

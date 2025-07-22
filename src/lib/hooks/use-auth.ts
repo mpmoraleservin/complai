@@ -126,6 +126,15 @@ export function useAuth() {
       }
 
       console.log('SignIn successful, user:', data.user?.email)
+      
+      // Ensure user profile exists after successful sign in
+      if (data?.user) {
+        const profileExists = await ensureUserProfile(data.user.id, data.user.email || '')
+        if (!profileExists) {
+          console.warn('⚠️ User profile creation failed during sign in')
+        }
+      }
+      
       return { data }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Sign in failed'
@@ -138,16 +147,102 @@ export function useAuth() {
     }
   }
 
-  const signUp = async (email: string, password: string) => {
+  // Helper function to ensure user profile exists
+  const ensureUserProfile = async (userId: string, email: string, userData?: { firstName?: string; lastName?: string; company?: string }) => {
+    try {
+      console.log('🔍 Checking if user profile exists...')
+      
+      // First, check if profile already exists
+      const { data: existingProfile, error: checkError } = await supabase
+        .from('users')
+        .select('id')
+        .eq('id', userId)
+        .single()
+
+      if (checkError && checkError.code !== 'PGRST116') {
+        console.error('❌ Error checking user profile:', checkError)
+        return false
+      }
+
+      if (existingProfile) {
+        console.log('✅ User profile already exists')
+        return true
+      }
+
+      // Profile doesn't exist, create it
+      console.log('👤 Creating user profile in database...')
+      const { error: insertError } = await supabase
+        .from('users')
+        .insert({
+          id: userId,
+          email: email,
+          first_name: userData?.firstName || '',
+          last_name: userData?.lastName || '',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
+
+      if (insertError) {
+        console.error('❌ Error creating user profile:', insertError)
+        return false
+      }
+
+      // If company data is provided, create company record
+      if (userData?.company) {
+        console.log('🏢 Creating company record...')
+        const { error: companyError } = await supabase
+          .from('companies')
+          .insert({
+            user_id: userId,
+            name: userData.company,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          })
+
+        if (companyError) {
+          console.error('❌ Error creating company record:', companyError)
+          // Don't fail the profile creation if company creation fails
+        } else {
+          console.log('✅ Company record created successfully')
+        }
+      }
+
+      console.log('✅ User profile created successfully')
+      return true
+    } catch (error) {
+      console.error('❌ Exception in ensureUserProfile:', error)
+      return false
+    }
+  }
+
+  const signUp = async (email: string, password: string, userData?: { firstName?: string; lastName?: string; company?: string }) => {
     setAuthState(prev => ({ ...prev, loading: true, error: null }))
     
     try {
+      console.log('🔐 Attempting to sign up with email:', email)
+      
       const { data, error } = await supabase.auth.signUp({
         email,
-        password
+        password,
+        options: {
+          data: {
+            email: email,
+            first_name: userData?.firstName || '',
+            last_name: userData?.lastName || '',
+            company: userData?.company || ''
+          }
+        }
+      })
+
+      console.log('📝 SignUp result:', { 
+        success: !error, 
+        error: error?.message,
+        user: data?.user?.id,
+        session: !!data?.session
       })
 
       if (error) {
+        console.error('❌ SignUp error:', error)
         setAuthState(prev => ({
           ...prev,
           error: error.message,
@@ -156,9 +251,21 @@ export function useAuth() {
         return { error }
       }
 
+      // If we have a user, try to create the user profile
+      if (data?.user) {
+        const profileCreated = await ensureUserProfile(data.user.id, data.user.email || email, userData)
+        
+        if (!profileCreated) {
+          console.warn('⚠️ User profile creation failed, but registration was successful')
+          // Don't fail the signup, just log the warning
+        }
+      }
+
+      setAuthState(prev => ({ ...prev, loading: false }))
       return { data }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Sign up failed'
+      console.error('❌ SignUp exception:', error)
       setAuthState(prev => ({
         ...prev,
         error: errorMessage,
@@ -264,12 +371,29 @@ export function useAuth() {
     }
   }
 
+  // Function to retry profile creation (can be called from settings page)
+  const retryProfileCreation = async () => {
+    if (!authState.user) {
+      return { error: { message: 'No user logged in' } }
+    }
+
+    console.log('🔄 Retrying profile creation...')
+    const success = await ensureUserProfile(authState.user.id, authState.user.email || '')
+    
+    if (success) {
+      return { data: { message: 'Profile created successfully' } }
+    } else {
+      return { error: { message: 'Failed to create profile' } }
+    }
+  }
+
   return {
     ...authState,
     signIn,
     signUp,
     signOut,
     verifyOtp,
-    resendVerification
+    resendVerification,
+    retryProfileCreation
   }
 } 

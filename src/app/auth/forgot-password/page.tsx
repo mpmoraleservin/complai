@@ -78,8 +78,8 @@ export default function ForgotPasswordPage() {
       subtitle="Enter your email address and we'll send you a link to reset your password."
     >
       {isMockMode && (
-        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-          <p className="text-sm text-yellow-800">
+        <div className="mb-4 p-3 bg-warning-50 border border-warning-200 rounded-md">
+          <p className="text-sm text-warning-800">
             <strong>Development Mode:</strong> Password reset emails are simulated.
           </p>
         </div>
@@ -88,19 +88,19 @@ export default function ForgotPasswordPage() {
       {success ? (
         <div className="text-center space-y-4">
           <div className="flex justify-center">
-            <CheckCircle className="w-12 h-12 text-green-500" />
+            <CheckCircle className="w-12 h-12 text-success-500" />
           </div>
           <h3 className="text-lg font-semibold text-gray-900">
             Check your email
           </h3>
           <p className="text-gray-600">
-            We've sent a password reset link to your email address. 
+            We&apos;ve sent a password reset link to your email address. 
             Please check your inbox and follow the instructions.
           </p>
           <div className="pt-4">
             <Link
               href="/auth/login"
-              className="inline-flex items-center text-sm text-purple-500 hover:text-purple-600"
+              className="inline-flex items-center text-sm text-primary-500 hover:text-primary-600"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to login
@@ -117,22 +117,22 @@ export default function ForgotPasswordPage() {
               placeholder="Enter your email"
               className={cn(
                 'w-full px-3 py-2 border rounded-md',
-                errors.email && 'border-red-500'
+                errors.email && 'border-destructive-500'
               )}
               {...register('email')}
             />
             {errors.email && (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
+              <p className="text-sm text-destructive-500">{errors.email.message}</p>
             )}
           </div>
 
           {error && (
-            <div className="text-sm text-red-500 text-center">{error}</div>
+            <div className="text-sm text-destructive-500 text-center">{error}</div>
           )}
 
           <Button
             type="submit"
-            className="w-full bg-purple-500 hover:bg-purple-600 text-white"
+            className="w-full bg-primary-500 hover:bg-primary-600 text-white"
             disabled={isLoading}
           >
             {isLoading ? 'Sending...' : 'Send reset link'}
@@ -141,7 +141,7 @@ export default function ForgotPasswordPage() {
           <div className="text-center">
             <Link
               href="/auth/login"
-              className="inline-flex items-center text-sm text-purple-500 hover:text-purple-600"
+              className="inline-flex items-center text-sm text-primary-500 hover:text-primary-600"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to login

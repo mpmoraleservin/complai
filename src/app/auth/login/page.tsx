@@ -103,8 +103,8 @@ export default function LoginPage() {
       subtitle="Welcome back! Please enter your details."
     >
       {isMockMode && (
-        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-          <p className="text-sm text-yellow-800">
+        <div className="mb-4 p-3 bg-warning-50 border border-warning-200 rounded-md">
+          <p className="text-sm text-warning-800">
             <strong>Development Mode:</strong> You can use any email/password combination to sign in.
           </p>
         </div>
@@ -119,12 +119,12 @@ export default function LoginPage() {
             placeholder="Enter your email"
             className={cn(
               'w-full px-3 py-2 border rounded-md',
-              errors.email && 'border-red-500'
+              errors.email && 'border-destructive-500'
             )}
             {...register('email')}
           />
           {errors.email && (
-            <p className="text-sm text-red-500">{errors.email.message}</p>
+            <p className="text-sm text-destructive-500">{errors.email.message}</p>
           )}
         </div>
 
@@ -137,7 +137,7 @@ export default function LoginPage() {
               placeholder="••••••••"
               className={cn(
                 'w-full px-3 py-2 pr-10 border rounded-md',
-                errors.password && 'border-red-500'
+                errors.password && 'border-destructive-500'
               )}
               {...register('password')}
             />
@@ -154,7 +154,7 @@ export default function LoginPage() {
             </button>
           </div>
           {errors.password && (
-            <p className="text-sm text-red-500">{errors.password.message}</p>
+            <p className="text-sm text-destructive-500">{errors.password.message}</p>
           )}
         </div>
 
@@ -163,7 +163,7 @@ export default function LoginPage() {
             <Checkbox 
               id="remember" 
               {...register('rememberMe')}
-              className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+              className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
             />
             <Label 
               htmlFor="remember" 
@@ -174,19 +174,19 @@ export default function LoginPage() {
           </div>
           <Link
             href="/auth/forgot-password"
-            className="text-sm text-purple-500 hover:text-purple-600 transition-colors"
+            className="text-sm text-primary-500 hover:text-primary-600 transition-colors"
           >
             Forgot password?
           </Link>
         </div>
 
         {error && (
-          <div className="text-sm text-red-500 text-center">{error}</div>
+          <div className="text-sm text-destructive-500 text-center">{error}</div>
         )}
 
         <Button
           type="submit"
-          className="w-full bg-purple-500 hover:bg-purple-600 text-white"
+          className="w-full bg-primary-500 hover:bg-primary-600 text-white"
           disabled={isLoading}
         >
           {isLoading ? 'Signing in...' : 'Sign in'}
@@ -205,7 +205,7 @@ export default function LoginPage() {
           <span className="text-sm text-gray-600">Don&apos;t have an account? </span>
           <a
             href="/auth/register"
-            className="text-sm text-purple-500 hover:text-purple-600"
+            className="text-sm text-primary-500 hover:text-primary-600"
           >
             Sign up
           </a>

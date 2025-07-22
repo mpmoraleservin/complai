@@ -7,6 +7,7 @@ const nextConfig = {
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
+  output: 'standalone',
 }
 
 module.exports = nextConfig 

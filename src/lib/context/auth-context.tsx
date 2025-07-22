@@ -11,10 +11,11 @@ interface AuthContextType {
   error: string | null
   isMockMode: boolean
   signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ data?: any; error?: any }>
-  signUp: (email: string, password: string) => Promise<{ data?: any; error?: any }>
+  signUp: (email: string, password: string, userData?: { firstName?: string; lastName?: string; company?: string }) => Promise<{ data?: any; error?: any }>
   signOut: () => Promise<{ error?: any }>
   verifyOtp: (email: string, token: string) => Promise<{ data?: any; error?: any }>
   resendVerification: (email: string) => Promise<{ error?: any }>
+  retryProfileCreation: () => Promise<{ data?: any; error?: any }>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)

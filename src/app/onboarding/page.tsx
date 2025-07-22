@@ -66,7 +66,7 @@ export default function OnboardingPage() {
               <Label htmlFor="size">Company Size</Label>
               <select
                 id="size"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 value={companyData.size}
                 onChange={(e) => setCompanyData({ ...companyData, size: e.target.value })}
               >
@@ -105,7 +105,7 @@ export default function OnboardingPage() {
                         })
                       }
                     }}
-                    className="rounded border-gray-300 text-purple-500 focus:ring-purple-500"
+                    className="rounded border-gray-300 text-primary-500 focus:ring-primary-500"
                   />
                   <span className="text-sm">{state}</span>
                 </label>
@@ -117,8 +117,8 @@ export default function OnboardingPage() {
         return (
           <div className="space-y-4">
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 bg-success-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-success-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
@@ -158,7 +158,7 @@ export default function OnboardingPage() {
         {/* Progress bar */}
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div
-            className="bg-purple-500 h-2 rounded-full transition-all duration-300"
+            className="bg-primary-500 h-2 rounded-full transition-all duration-300"
             style={{ width: `${(step / 3) * 100}%` }}
           />
         </div>
@@ -177,7 +177,7 @@ export default function OnboardingPage() {
           <Button
             onClick={handleNext}
             disabled={isLoading}
-            className="bg-purple-500 hover:bg-purple-600 text-white px-6"
+            className="bg-primary-500 hover:bg-primary-600 text-white px-6"
           >
             {isLoading ? 'Setting up...' : step === 3 ? 'Complete Setup' : 'Next'}
           </Button>
