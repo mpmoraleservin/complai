@@ -235,6 +235,7 @@ export function useAuth() {
         email,
         password,
         options: {
+          emailRedirectTo: process.env.NODE_ENV === "production" ? "https://complai-gamma.vercel.app/auth/callback" : "http://localhost:3000/auth/callback",
           data: {
             email: email,
             first_name: userData?.firstName || '',

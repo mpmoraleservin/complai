@@ -59,6 +59,7 @@ If you see "Supabase environment variables are required in production":
 ### Mock Mode
 
 If the app runs in mock mode:
+
 - Signup/login will be simulated
 - No real database operations
 - Perfect for testing UI/UX
@@ -66,6 +67,7 @@ If the app runs in mock mode:
 ### Production Setup
 
 For production:
+
 1. Set up Supabase project
 2. Configure environment variables in Vercel
 3. Run database migrations
@@ -74,6 +76,7 @@ For production:
 ## Support
 
 If you encounter issues:
+
 1. Check the build logs in Vercel
 2. Verify environment variables are set
 3. Test locally with `npm run dev`
