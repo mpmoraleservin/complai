@@ -24,6 +24,16 @@ export function useAuth() {
   const supabase = createClient()
 
   useEffect(() => {
+    // Skip initialization during build time
+    if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
+      setAuthState(prev => ({
+        ...prev,
+        loading: false,
+        isMockMode: true
+      }))
+      return
+    }
+
     // Check if we're in mock mode
     const isMockMode = !process.env.NEXT_PUBLIC_SUPABASE_URL || 
                       process.env.NEXT_PUBLIC_SUPABASE_URL === 'your_supabase_url' ||

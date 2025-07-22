@@ -5,6 +5,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 // Check if we're in development mode and environment variables are not properly configured
 const isDevelopmentMode = process.env.NODE_ENV === 'development'
+const isBuildTime = typeof window === 'undefined' && process.env.NODE_ENV === 'production'
 const hasValidEnvVars = supabaseUrl && 
                        supabaseAnonKey && 
                        supabaseUrl !== 'your_supabase_url' && 
@@ -19,9 +20,9 @@ export const createClient = () => {
     return supabaseInstance
   }
 
-  // If we're in development and don't have valid env vars, use mock mode
-  if (isDevelopmentMode && !hasValidEnvVars) {
-    console.warn('⚠️ Supabase environment variables not configured. Using development mock mode.')
+  // If we're in development and don't have valid env vars, or during build time, use mock mode
+  if ((isDevelopmentMode && !hasValidEnvVars) || isBuildTime) {
+    console.warn('⚠️ Supabase environment variables not configured or during build time. Using mock mode.')
     
     // Create and store mock client
     supabaseInstance = {

@@ -8,6 +8,11 @@ const nextConfig = {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
   output: 'standalone',
+  experimental: {
+    // Disable static generation for pages that depend on authentication
+    workerThreads: false,
+    cpus: 1
+  }
 }
 
 module.exports = nextConfig 
