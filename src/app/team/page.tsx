@@ -284,89 +284,94 @@ export default function TeamPage() {
               </div>
             </div>
 
-            {/* Filters and Search */}
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setShowFilters(!showFilters)}
-                  className="flex items-center"
-                >
-                  <Filter className="w-4 h-4 mr-2" />
-                  Filters
-                  {hasActiveFilters && (
-                    <span className="ml-2 px-2 py-0.5 bg-primary-100 text-primary-600 text-xs rounded-full">
-                      {Object.values(filters).filter(v => v !== 'all' && v !== '').length}
-                    </span>
-                  )}
-                </Button>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <Input
-                    type="text"
-                    placeholder="Search employees..."
-                    value={filters.search}
-                    onChange={(e) => handleFilterChange('search', e.target.value)}
-                    className="pl-10 w-64"
-                  />
-                </div>
-              </div>
-
-              {/* Advanced Filters */}
-              {showFilters && (
-                <Card className="mb-4">
-                  <CardContent className="p-4">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div>
-                        <Label className="block text-sm font-medium text-gray-700 mb-1">Handbook Status</Label>
-                        <Select value={filters.handbookStatus} onValueChange={(value) => handleFilterChange('handbookStatus', value)}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="All Status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="all">All Status</SelectItem>
-                            <SelectItem value="acknowledged">Acknowledged</SelectItem>
-                            <SelectItem value="pending">Pending</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      <div>
-                        <Label className="block text-sm font-medium text-gray-700 mb-1">Role</Label>
-                        <Select value={filters.role} onValueChange={(value) => handleFilterChange('role', value)}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="All Roles" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="all">All Roles</SelectItem>
-                            <SelectItem value="product designer">Product Designer</SelectItem>
-                            <SelectItem value="product manager">Product Manager</SelectItem>
-                            <SelectItem value="senior developer">Senior Developer</SelectItem>
-                            <SelectItem value="ux designer">UX Designer</SelectItem>
-                            <SelectItem value="marketing manager">Marketing Manager</SelectItem>
-                            <SelectItem value="hr specialist">HR Specialist</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      <div className="flex items-end">
-                        <Button
-                          variant="outline"
-                          onClick={clearFilters}
-                          className="w-full"
-                        >
-                          Clear Filters
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-
             {/* Team Table */}
             <Card>
-              <CardContent className="p-0">
+              <CardHeader>
+                <CardTitle>My Team</CardTitle>
+                <CardDescription>
+                  All team members with their handbook acknowledgment status
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* Filters and Search */}
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setShowFilters(!showFilters)}
+                      className="flex items-center"
+                    >
+                      <Filter className="w-4 h-4 mr-2" />
+                      Filters
+                      {hasActiveFilters && (
+                        <span className="ml-2 px-2 py-0.5 bg-primary-100 text-primary-600 text-xs rounded-full">
+                          {Object.values(filters).filter(v => v !== 'all' && v !== '').length}
+                        </span>
+                      )}
+                    </Button>
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <Input
+                        type="text"
+                        placeholder="Search employees..."
+                        value={filters.search}
+                        onChange={(e) => handleFilterChange('search', e.target.value)}
+                        className="pl-10 w-64"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Advanced Filters */}
+                  {showFilters && (
+                    <Card className="mb-4">
+                      <CardContent className="p-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div>
+                            <Label className="block text-sm font-medium text-gray-700 mb-1">Handbook Status</Label>
+                            <Select value={filters.handbookStatus} onValueChange={(value) => handleFilterChange('handbookStatus', value)}>
+                              <SelectTrigger>
+                                <SelectValue placeholder="All Status" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="all">All Status</SelectItem>
+                                <SelectItem value="acknowledged">Acknowledged</SelectItem>
+                                <SelectItem value="pending">Pending</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          
+                          <div>
+                            <Label className="block text-sm font-medium text-gray-700 mb-1">Role</Label>
+                            <Select value={filters.role} onValueChange={(value) => handleFilterChange('role', value)}>
+                              <SelectTrigger>
+                                <SelectValue placeholder="All Roles" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="all">All Roles</SelectItem>
+                                <SelectItem value="product designer">Product Designer</SelectItem>
+                                <SelectItem value="product manager">Product Manager</SelectItem>
+                                <SelectItem value="senior developer">Senior Developer</SelectItem>
+                                <SelectItem value="ux designer">UX Designer</SelectItem>
+                                <SelectItem value="marketing manager">Marketing Manager</SelectItem>
+                                <SelectItem value="hr specialist">HR Specialist</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          
+                          <div className="flex items-end">
+                            <Button
+                              variant="outline"
+                              onClick={clearFilters}
+                              className="w-full"
+                            >
+                              Clear Filters
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
@@ -429,6 +434,7 @@ export default function TeamPage() {
                   </table>
                 </div>
 
+                {/* Empty State */}
                 {paginatedEmployees.length === 0 && (
                   <div className="text-center py-12">
                     <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -441,7 +447,7 @@ export default function TeamPage() {
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                  <div className="p-4 border-t border-gray-200">
+                  <div className="mt-6">
                     <Pagination
                       currentPage={currentPage}
                       totalPages={totalPages}

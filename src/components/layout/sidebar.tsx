@@ -48,7 +48,7 @@ export function Sidebar({ className, onClose, isMobile }: SidebarProps) {
   }
 
   return (
-    <div className={cn('sidebar-container flex flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 w-64', className)}>
+    <div className={cn('sidebar-container flex flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 w-64 overflow-hidden', className)}>
       {/* Close Button for Mobile - Only show on mobile */}
       {isMobile && onClose && (
         <div className="flex items-center justify-end h-12 border-b border-gray-200 dark:border-gray-700 px-4 md:hidden">
@@ -70,7 +70,7 @@ export function Sidebar({ className, onClose, isMobile }: SidebarProps) {
       </div>
 
       {/* Navigation - Takes remaining space */}
-      <nav className="flex-1 px-4 py-6 space-y-1 overflow-hidden">
+      <nav className="flex-1 px-4 py-6 space-y-1 overflow-hidden min-h-0">
         {navigation.map((item) => {
           const isActive = pathname === item.href
           return (
