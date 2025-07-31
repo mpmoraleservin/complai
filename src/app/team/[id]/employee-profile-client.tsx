@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ProtectedRoute } from '@/components/auth/protected-route'
-import { DashboardLayout } from '@/components/layout/dashboard-layout'
+import { Textarea } from '@/components/ui/textarea'
+import { SimpleLayout } from '@/components/layout/simple-layout'
 import { 
   ChevronLeft,
   Upload,
@@ -274,11 +274,10 @@ export default function EmployeeProfileClient({ employeeId }: EmployeeProfileCli
         <div className="mt-6">
           <Label>Bio</Label>
           <p className="text-sm text-gray-600 mt-1 mb-3">Write a short introduction.</p>
-          <textarea
+          <Textarea
             value={formData.bio}
             onChange={(e) => handleInputChange('bio', e.target.value)}
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
             placeholder="Tell us about yourself..."
           />
         </div>
@@ -624,9 +623,8 @@ export default function EmployeeProfileClient({ employeeId }: EmployeeProfileCli
   )
 
   return (
-    <ProtectedRoute>
-      <DashboardLayout>
-        <div className="p-6">
+    <SimpleLayout>
+      <div className="p-6">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
             <div className="mb-8">
@@ -697,7 +695,6 @@ export default function EmployeeProfileClient({ employeeId }: EmployeeProfileCli
             </Card>
           </div>
         </div>
-      </DashboardLayout>
-    </ProtectedRoute>
+      </SimpleLayout>
   )
 } 

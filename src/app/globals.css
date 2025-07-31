@@ -247,5 +247,192 @@
   }
   body {
     @apply bg-background text-foreground;
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  /* Unified Action Button Styles */
+  .btn-action-primary {
+    @apply text-primary-600 hover:text-primary-700 hover:bg-primary-50 transition-colors;
+  }
+  
+  .btn-action-info {
+    @apply text-info-600 hover:text-info-700 hover:bg-info-50 transition-colors;
+  }
+  
+  .btn-action-success {
+    @apply text-success-600 hover:text-success-700 hover:bg-success-50 transition-colors;
+  }
+  
+  .btn-action-warning {
+    @apply text-warning-600 hover:text-warning-700 hover:bg-warning-50 transition-colors;
+  }
+  
+  .btn-action-destructive {
+    @apply text-destructive-600 hover:text-destructive-700 hover:bg-destructive-50 transition-colors;
+  }
+
+  /* Unified Status Badge Styles */
+  .badge-status-success {
+    @apply bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200;
+  }
+  
+  .badge-status-warning {
+    @apply bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-200;
+  }
+  
+  .badge-status-destructive {
+    @apply bg-destructive-100 text-destructive-800 dark:bg-destructive-900 dark:text-destructive-200;
+  }
+  
+  .badge-status-info {
+    @apply bg-info-100 text-info-800 dark:bg-info-900 dark:text-info-200;
+  }
+
+  /* Unified Risk Level Styles */
+  .risk-high {
+    @apply text-destructive-600 bg-destructive-100 dark:bg-destructive-900 dark:text-destructive-200;
+  }
+  
+  .risk-medium {
+    @apply text-warning-600 bg-warning-100 dark:bg-warning-900 dark:text-warning-200;
+  }
+  
+  .risk-low {
+    @apply text-success-600 bg-success-100 dark:bg-success-900 dark:text-success-200;
+  }
+
+  /* Unified Priority Styles */
+  .priority-high {
+    @apply bg-destructive-100 text-destructive-800 dark:bg-destructive-900 dark:text-destructive-200;
+  }
+  
+  .priority-medium {
+    @apply bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-200;
+  }
+  
+  .priority-low {
+    @apply bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200;
+  }
+
+  /* Unified Pagination Styles */
+  .pagination-container {
+    @apply flex items-center justify-between p-6 border-t border-gray-200 dark:border-gray-700;
+  }
+  
+  .pagination-info {
+    @apply text-sm text-gray-500 dark:text-gray-400;
+  }
+  
+  .pagination-controls {
+    @apply flex items-center space-x-2;
+  }
+  
+  .pagination-button {
+    @apply w-8 h-8 text-sm font-medium rounded transition-colors;
+  }
+  
+  .pagination-button-active {
+    @apply bg-primary-600 text-white hover:bg-primary-700;
+  }
+  
+  .pagination-button-inactive {
+    @apply text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800;
+  }
+  
+  .pagination-nav-button {
+    @apply flex items-center justify-center w-8 h-8 p-0 transition-colors;
+  }
+
+  /* Unified Table Action Styles */
+  .table-action-button {
+    @apply flex items-center space-x-2;
+  }
+  
+  .table-action-icon {
+    @apply w-4 h-4;
+  }
+
+  /* Unified Modal Styles */
+  .modal-overlay {
+    @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+  }
+  
+  .modal-container {
+    @apply bg-white dark:bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto;
+  }
+  
+  .modal-header {
+    @apply flex items-center justify-between mb-4;
+  }
+  
+  .modal-close-button {
+    @apply text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors;
+  }
+
+  /* Unified Form Styles */
+  .form-section {
+    @apply space-y-6;
+  }
+  
+  .form-field {
+    @apply space-y-2;
+  }
+  
+  .form-label {
+    @apply text-sm font-medium text-gray-700 dark:text-gray-300;
+  }
+  
+  .form-input {
+    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white;
+  }
+
+  /* Unified Card Styles */
+  .card-header-icon {
+    @apply w-5 h-5 text-primary-600 dark:text-primary-400;
+  }
+  
+  .card-avatar {
+    @apply w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center;
+  }
+  
+  .card-avatar-icon {
+    @apply w-4 h-4 text-primary-600 dark:text-primary-400;
+  }
+
+  /* Unified Empty State Styles */
+  .empty-state {
+    @apply text-center py-12;
+  }
+  
+  .empty-state-icon {
+    @apply w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4;
+  }
+  
+  .empty-state-text {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+
+  /* Unified Loading States */
+  .loading-skeleton {
+    @apply animate-pulse bg-gray-200 dark:bg-gray-700 rounded;
+  }
+  
+  .loading-spinner {
+    @apply animate-spin rounded-full border-2 border-gray-300 border-t-primary-600;
+  }
+
+  /* Layout Styles */
+  .layout-container {
+    @apply h-screen overflow-hidden;
+  }
+  
+  .sidebar-container {
+    @apply h-full overflow-hidden;
+  }
+  
+  .main-content {
+    @apply flex-1 overflow-auto;
   }
 } 
