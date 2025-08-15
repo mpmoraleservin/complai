@@ -1,0 +1,27 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield Background -->
+  <path
+    d="M16 3L4 8V16C4 21.5228 8.47715 26 14 26C19.5228 26 24 21.5228 24 16V8L16 3Z"
+    fill="#7C3AED"
+    fillOpacity="0.1"
+    stroke="#7C3AED"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  
+  <!-- AI/Compliance symbol inside shield -->
+  <path
+    d="M12 16L14 18L20 12"
+    stroke="#7C3AED"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    fill="none"
+  />
+  
+  <!-- Small dots representing AI/technology -->
+  <circle cx="10" cy="10" r="0.75" fill="#7C3AED" />
+  <circle cx="22" cy="10" r="0.75" fill="#7C3AED" />
+  <circle cx="16" cy="8" r="0.75" fill="#7C3AED" />
+</svg> 

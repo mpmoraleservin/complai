@@ -1,0 +1,10 @@
+{
+  "basics": {
+    "whatHappened": "Employee reported harassment by coworker during team meeting",
+    "involvedParties": ["John Doe", "Jane Smith"],
+    "location": "Conference Room A",
+    "datetime": "2024-01-15T10:30:00",
+    "attachments": []
+  },
+  "history": []
+}

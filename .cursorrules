@@ -1,0 +1,324 @@
+# COMPLai - AI-powered Employment Compliance Platform
+
+## Primary Mission
+
+Your role as an AI assistant is to ensure that all code you generate for this project meets the highest standards of quality, legal safety, and technical consistency. Your goal is to build UI and business logic for a labor compliance platform using a modern stack tailored to our needs.
+
+## Project Overview
+
+COMPLai is a comprehensive labor compliance platform designed to streamline contract management, legal compliance monitoring, and workforce administration. The platform helps businesses generate employment contracts tailored to each state and role, audit existing contracts with AI, track regulatory changes, and send contracts for e-signature.
+
+### The Problem
+
+- U.S. labor laws are complex, constantly changing, and state-specific
+- Small and mid-sized businesses (SMBs) often use outdated or non-compliant contracts
+- This exposes them to lawsuits, especially around details like meal breaks, overtime, and scheduling
+
+### The Solution
+
+A SaaS platform that helps businesses:
+
+1. Generate employment contracts tailored to each state and role, always up to date with labor laws
+2. Audit existing contracts with AI to detect compliance issues
+3. Track regulatory changes and alert users if their contracts become non-compliant
+4. Send contracts for e-signature using PandaDoc
+5. Optionally: Offer an API or HR portal for consultants managing multiple clients
+
+## Tech Stack
+
+| Layer     | Technology                                            | Purpose                                 |
+| --------- | ----------------------------------------------------- | --------------------------------------- |
+| Frontend  | Next.js 15.3+ + React 19 + Tailwind CSS 4 + shadcn/ui | User interface, SSR, deployed on Vercel |
+| Hosting   | Vercel                                                | Frontend deploy + API hosting           |
+| Database  | Supabase (PostgreSQL)                                 | Users, contracts, audit logs            |
+| Auth      | Supabase Auth                                         | User authentication and roles           |
+| Vector DB | Pinecone                                              | Semantic search of laws                 |
+| AI        | OpenAI (GPT-4 + embeddings)                           | Clause analysis, suggestions            |
+| Signature | PandaDoc API                                          | Document signing and delivery           |
+| Icons     | lucide-react                                          | Iconography                             |
+| Styling   | clsx + tailwind-merge via cn utility                  | Class management                        |
+| Variants  | class-variance-authority (CVA)                        | Component variants                      |
+
+## Current Application Structure (V1 Prototype)
+
+### Core Pages
+
+1. **Dashboard** (`/dashboard`) - Main overview with compliance metrics and team preview
+2. **My Team** (`/team`) - Full team management with handbook status tracking
+3. **Handbook** (`/handbook`) - Employee handbook management and creation
+4. **Incident Coach** (`/incident-coach`) - Workplace incident logging and analysis
+5. **Legal Updates** (`/legal-updates`) - Legal compliance updates and alerts
+
+### Key Features
+
+#### Dashboard
+
+- **Three main metric cards:**
+  - Compliance Score (87% with +3% trend)
+  - Handbook Status (Compliant/Needs Review bubble)
+  - Flagged Issues (2 pending acknowledgments)
+- **My Team preview table** with columns:
+  - Employee (name, role)
+  - Email
+  - Handbook Status (Acknowledged/Pending)
+  - Actions (edit, view, delete)
+- **Action Items section** with three buttons:
+  - View Handbook
+  - Incident Coach
+  - Legal Updates
+
+#### My Team Page
+
+- Full table view matching dashboard preview
+- Same columns: Employee, Email, Handbook Status, Actions
+- Filtering by handbook status and role
+- Bulk actions and individual employee management
+
+#### Handbook Page
+
+- **Current handbook display** with preview, download, and share options
+- **Create New Handbook button** that starts a 9-question flow
+- **Handbook sections overview** (Company Overview, Employment Policies, etc.)
+- **Compliance status** showing 100% compliant
+- **Old Handbooks table** with versions, last updated, status, compliance score, and actions (View, Restore, Remove)
+
+#### Incident Coach
+
+- **Incident logging form** with fields:
+  - Employees involved (multi-select)
+  - What happened (description)
+  - When (date/time)
+  - Where (location)
+  - How (circumstances)
+- **Risk assessment** (High/Medium/Low) based on incident description
+- **Next steps recommendations** based on risk level
+- **Action buttons** for drafting emails, creating reports, scheduling meetings
+
+#### Legal Updates
+
+- **Recent legal updates** with priority levels and impact assessments
+- **Upcoming features** preview
+- **Real-time alerts** for legal changes
+
+## Data Models
+
+### Employee
+
+```typescript
+{
+  id: number;
+  name: string;
+  role: string;
+  email: string;
+  handbookStatus: "Acknowledged" | "Pending";
+}
+```
+
+### Incident
+
+```typescript
+{
+  employees: number[]
+  description: string
+  date: string
+  time: string
+  location: string
+  how: string
+}
+```
+
+### Handbook
+
+```typescript
+{
+  version: string;
+  lastUpdated: string;
+  status: "Active" | "Draft" | "Archived";
+  complianceScore: number;
+}
+```
+
+## UI/UX Guidelines
+
+### Color Scheme
+
+- **Primary**: Purple (#6366f1)
+- **Success**: Green (#10b981)
+- **Warning**: Yellow (#f59e0b)
+- **Error**: Red (#ef4444)
+- **Info**: Blue (#3b82f6)
+
+### Status Colors
+
+- **Acknowledged**: Green background with green text
+- **Pending**: Yellow background with yellow text
+- **Compliant**: Green background with green text
+- **Needs Review**: Red background with red text
+
+### Icons
+
+- **Dashboard**: Home icon
+- **My Team**: Users icon
+- **Handbook**: BookOpen icon
+- **Incident Coach**: AlertCircle icon
+- **Legal Updates**: Scale icon
+
+## Navigation
+
+- **Sidebar navigation** with 5 main items
+- **Breadcrumb navigation** on sub-pages
+- **Back buttons** to return to dashboard
+- **Action buttons** in headers for primary actions
+
+## Responsive Design
+
+- **Mobile-first approach**
+- **Responsive tables** with horizontal scroll
+- **Collapsible sidebar** on mobile
+- **Touch-friendly buttons** and interactions
+
+## Development Guidelines
+
+### File Structure
+
+```
+src/app/
+├── dashboard/page.tsx
+├── team/page.tsx
+├── handbook/page.tsx
+├── handbook/create/page.tsx
+├── handbook/preview/page.tsx
+├── incident-coach/page.tsx
+├── legal-updates/page.tsx
+└── [other pages]
+```
+
+### Component Usage
+
+- Use `SimpleLayout` wrapper for all pages (prototype mode)
+- Use `Card`, `Button`, `Input` components from UI library
+- Follow consistent spacing and typography
+- Use `TooltipProvider` for enhanced UX
+
+### State Management
+
+- Use React hooks for local state
+- Mock data for V1 prototype
+- Prepare for future API integration
+
+## Key Features Implementation
+
+### Contract Generator (Future)
+
+- Multi-step form wizard
+- State selection with legal requirements
+- Role-based template selection
+- Shift type configuration
+- Custom clause addition
+- Real-time legal compliance checking
+
+### AI Legal Auditor (Future)
+
+- Contract clause extraction
+- Semantic similarity search
+- Compliance rule engine
+- Audit report generation
+- Legal knowledge base integration
+
+### E-Signature Integration (Future)
+
+- PandaDoc integration
+- Document sending workflow
+- Signature status tracking
+- Real-time notifications
+- Completed document storage
+
+## Mock Data Guidelines
+
+### Employee Data
+
+- 6 employees: John Doe, Jane Smith, Mike Johnson, Sarah Wilson, David Brown, Emma Davis
+- Roles: Product Designer, Product Manager, Senior Developer, UX Designer, Marketing Manager, HR Specialist
+- Emails: @complai.io format
+- Handbook Status: Mix of Acknowledged and Pending
+
+### Compliance Metrics
+
+- Compliance Score: 87% (realistic, not 100%)
+- Flagged Issues: 2 pending acknowledgments
+- Handbook Status: Compliant
+
+### Incident Analysis
+
+- High Risk: harassment, discrimination, violence, threats, assault, bullying
+- Medium Risk: conflict, dispute, argument, yelling, inappropriate, unprofessional
+- Low Risk: minor incidents
+- Factors: location (public/client), number of employees involved
+
+## Code Quality Standards
+
+### TypeScript
+
+- 100% TypeScript coverage
+- Strict typing (no any)
+- Explicit prop interfaces
+- Server Components when possible
+
+### Component Structure
+
+- Use `'use client'` only when necessary
+- Implement proper prop interfaces
+- Use `cn` utility for class composition
+- Use `cva` for component variants
+
+### Error Handling
+
+- Proper error boundaries
+- Loading states for async operations
+- Form validation with proper feedback
+- Graceful fallbacks
+
+## Performance Requirements
+
+- Page load times < 2 seconds
+- API response times < 500ms
+- Mobile-first responsive design
+- Optimized bundle size
+
+## Security Considerations
+
+- Input validation and sanitization
+- Proper authentication flows
+- Secure API endpoints
+- Data encryption at rest
+
+## Future Enhancements (Not in V1)
+
+- Real handbook creation flow with 9 questions
+- Advanced incident analysis
+- Document generation and management
+- User roles and permissions
+- API integration with backend services
+- Real-time legal updates
+- Advanced compliance monitoring
+
+## Testing Considerations
+
+- Test all form validations
+- Test responsive design on mobile
+- Test navigation flows
+- Test status color coding
+- Test action button functionality
+
+## Performance
+
+- Optimize bundle size
+- Lazy load non-critical components
+- Use proper image optimization
+- Implement proper caching strategies
+
+## Executive Summary
+
+This is a legal-grade tool. Precision and robustness are your baseline. All UI is built using shadcn/ui, Tailwind, and Radix. Icons: always use lucide-react. Use cn for all class composition. Use strict TypeScript and follow App Router rules. Legal compliance is non-negotiable: AI + Pinecone must back every audit. Every contract must be signable with PandaDoc.
+
+The current V1 prototype focuses on a simplified, focused feature set with mock data and basic functionality. The application is designed to be easily extensible for future phases that will include real AI integration, contract generation, and legal compliance features.

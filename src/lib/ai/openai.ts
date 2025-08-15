@@ -1,0 +1,81 @@
+export class OpenAIError extends Error {
+  constructor(message: string, public statusCode?: number) {
+    super(message);
+    this.name = 'OpenAIError';
+  }
+}
+
+export interface OpenAIResponse {
+  content: string;
+  usage?: {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+  };
+}
+
+export class OpenAI {
+  private apiKey: string;
+  private baseURL: string;
+
+  constructor(apiKey?: string) {
+    this.apiKey = apiKey || process.env.OPENAI_API_KEY || '';
+    if (!this.apiKey) {
+      throw new Error('OpenAI API key is required');
+    }
+    this.baseURL = 'https://api.openai.com/v1';
+  }
+
+  async chatCompletion(params: {
+    systemPrompt: string;
+    userPrompt: string;
+    responseFormat?: 'text' | 'json_object';
+    temperature?: number;
+  }): Promise<OpenAIResponse> {
+    const { systemPrompt, userPrompt, responseFormat = 'text', temperature = 0.1 } = params;
+
+    try {
+      const response = await fetch(`${this.baseURL}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+                            body: JSON.stringify({
+                      model: 'gpt-4o-mini',
+                      messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: userPrompt }
+                      ],
+                      temperature,
+                      response_format: responseFormat === 'json_object' ? { type: 'json_object' } : undefined,
+                    }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new OpenAIError(
+          errorData.error?.message || `OpenAI API error: ${response.status}`,
+          response.status
+        );
+      }
+
+      const data = await response.json();
+      const content = data.choices[0]?.message?.content;
+      
+      if (!content) {
+        throw new OpenAIError('No content received from OpenAI');
+      }
+
+      return {
+        content,
+        usage: data.usage,
+      };
+    } catch (error) {
+      if (error instanceof OpenAIError) {
+        throw error;
+      }
+      throw new OpenAIError(`OpenAI API request failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+}

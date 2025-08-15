@@ -1,0 +1,23 @@
+{
+  "basics": {
+    "whatHappened": "Employee reported harassment by coworker during team meeting",
+    "involvedParties": ["John Doe", "Jane Smith"],
+    "location": "Conference Room A",
+    "datetime": "2024-01-15T10:30:00",
+    "attachments": []
+  },
+  "qa": [
+    {
+      "question": "What type of harassment occurred?",
+      "answer": "Verbal harassment including inappropriate comments and belittling remarks"
+    },
+    {
+      "question": "Were there any witnesses to the incident?",
+      "answer": "Yes, three other team members were present during the meeting"
+    },
+    {
+      "question": "Has this type of behavior been reported before?",
+      "answer": "This is the first formal complaint, but there have been informal concerns raised"
+    }
+  ]
+}
