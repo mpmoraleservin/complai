@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { OpenAI } from '@/lib/ai/openai';
+import { OpenAI, calculateOpenAICost } from '@/lib/ai/openai';
 import { DemoAI } from '@/lib/ai/demo';
 import { getSystemPromptForQuestions } from '@/lib/ai/prompts';
 import { readFileSync } from 'fs';
@@ -36,7 +36,6 @@ export async function POST(request: NextRequest) {
     
     try {
       handbookContent = readFileSync(handbookPath, 'utf-8');
-      console.log('Using full handbook with GPT-4o-mini (128K context)');
     } catch (error) {
       // Fallback to concise version if original not found
       try {
@@ -66,9 +65,9 @@ Please provide follow-up questions to gather missing information for risk assess
 
     // Check if we have OpenAI API key from user or environment
     const userAPIKey = request.headers.get('x-openai-api-key');
-    const hasOpenAIKey = userAPIKey || (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'tu_api_key_aqui');
+    const hasOpenAIKey = userAPIKey || (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'tu_api_key_aqui' && process.env.OPENAI_API_KEY !== '');
     
-    if (hasOpenAIKey) {
+    if (hasOpenAIKey && userAPIKey) {
       // Use real OpenAI
       const systemPrompt = getSystemPromptForQuestions(handbookContent);
       const openai = new OpenAI(userAPIKey || undefined);
@@ -92,16 +91,35 @@ Please provide follow-up questions to gather missing information for risk assess
         throw new Error('Invalid response structure from OpenAI');
       }
 
+      // Log token usage and cost
+      if (response.usage) {
+        const cost = calculateOpenAICost(response.usage);
+        console.log('🔍 NEXT QUESTIONS - Token Usage & Cost:');
+        console.log(`   Tokens: ${response.usage.total_tokens} (Input: ${response.usage.prompt_tokens}, Output: ${response.usage.completion_tokens})`);
+        console.log(`   Cost: $${cost.totalCost.toFixed(6)} (${cost.costBreakdown})`);
+        console.log(`   ${cost.pricingReference}`);
+        console.log(`   Questions Generated: ${parsedResponse.questions.length}`);
+      }
+
       return NextResponse.json({
         questions: parsedResponse.questions,
-        rationale: parsedResponse.rationale
+        rationale: parsedResponse.rationale,
+        usage: response.usage
       });
     } else {
       // Use demo mode
-      const demoAI = new DemoAI();
-      const response = await demoAI.getNextQuestions(validatedInput.basics, validatedInput.history);
-      
-      return NextResponse.json(response);
+      try {
+        const demoAI = new DemoAI();
+        const response = await demoAI.getNextQuestions(validatedInput.basics, validatedInput.history);
+        
+        return NextResponse.json(response);
+      } catch (demoError) {
+        console.error('Demo mode error:', demoError);
+        return NextResponse.json(
+          { error: 'Demo mode error', message: demoError instanceof Error ? demoError.message : 'Unknown demo error' },
+          { status: 500 }
+        );
+      }
     }
 
   } catch (error) {

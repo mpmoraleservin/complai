@@ -4,6 +4,8 @@ export type IncidentBasics = {
   location: string;
   datetime: string; // ISO
   attachments?: { name: string; url?: string }[];
+  // Confidentiality
+  isConfidential: boolean; // Whether the reporter requested this to be confidential
 };
 
 export type QA = { question: string; answer: string };
@@ -18,7 +20,91 @@ export type PolicyViolation = {
   confidence: number;
 };
 
+// New scoring rubric types
+export type IncidentScoringFactor = {
+  factor: string;
+  weight: number;
+  score: number; // 1-5
+  weightedScore: number;
+  criteria: string;
+};
+
+export type IncidentScore = {
+  totalScore: number;
+  riskLevel: "Low Risk" | "Moderate Risk" | "High Risk";
+  factors: IncidentScoringFactor[];
+  explanation: string;
+};
+
+// Enhanced party information
+export type PartyInfo = {
+  name: string;
+  role: "Complainant" | "Accused/Subject" | "Witness" | "Other";
+  relationship?: string;
+};
+
+// General information section
+export type GeneralInformation = {
+  incidentId: string;
+  reportDateTime: string;
+  reporterName: string;
+  reporterRole: string;
+  reporterContact: string;
+  relationshipToIncident: string;
+};
+
+// Incident details section
+export type IncidentDetails = {
+  incidentDateTime: string;
+  location: string;
+  description: string;
+  howReporterBecameAware: string;
+  contextBackground?: string;
+};
+
+// Impact and consequences
+export type ImpactConsequences = {
+  immediateImpact: string[];
+  medicalTreatmentRequired: boolean;
+  medicalTreatmentDetails?: string;
+  lawEnforcementContacted: boolean;
+  lawEnforcementDetails?: string;
+};
+
+// Policy cross-check
+export type PolicyCrossCheck = {
+  relevantPolicySections: string[];
+  policiesViolated: boolean;
+  violatedPolicies?: string[];
+  lastAcknowledgmentDates: Record<string, string>;
+  priorRelatedIncidents: boolean;
+  priorIncidentDates?: string[];
+};
+
 export type IncidentReport = {
+  // 1. Incident Score (AI-generated)
+  incident_score: IncidentScore;
+  
+  // 2. General Information (not AI)
+  general_information: GeneralInformation;
+  
+  // 3. Parties Involved (from user data, enhanced by AI)
+  parties_involved: {
+    complainants: PartyInfo[];
+    accused_subjects: PartyInfo[];
+    witnesses: PartyInfo[];
+  };
+  
+  // 4. Incident Details (AI-generated from user input)
+  incident_details: IncidentDetails;
+  
+  // 5. Impact/Consequences (AI-generated)
+  impact_consequences: ImpactConsequences;
+  
+  // 6. Policy & Documentation Cross-Check (AI-generated)
+  policy_cross_check: PolicyCrossCheck;
+  
+  // Legacy fields for backward compatibility
   incident_summary: string;
   detailed_account: string;
   involved_parties: string[];

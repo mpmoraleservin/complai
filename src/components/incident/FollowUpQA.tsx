@@ -15,6 +15,7 @@ interface FollowUpQAProps {
   qaHistory: QA[]
   currentQuestionIndex: number
   onQuestionIndexChange: (index: number) => void
+  isDemoMode?: boolean
 }
 
 export function FollowUpQA({
@@ -22,7 +23,8 @@ export function FollowUpQA({
   onAnswer,
   qaHistory,
   currentQuestionIndex,
-  onQuestionIndexChange
+  onQuestionIndexChange,
+  isDemoMode = false
 }: FollowUpQAProps) {
   const [currentAnswer, setCurrentAnswer] = useState('')
 
@@ -156,6 +158,17 @@ export function FollowUpQA({
                   className="flex-1 ml-auto"
                 >
                   Next Question
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              )}
+              
+              {/* In demo mode, show Generate Report button when on last question */}
+              {isDemoMode && isLastQuestion && hasAnsweredCurrent && (
+                <Button
+                  onClick={() => onAnswer('', '')}
+                  className="flex-1 ml-auto"
+                >
+                  Generate Report
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               )}

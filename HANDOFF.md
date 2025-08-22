@@ -2,7 +2,7 @@
 
 ## Overview
 
-This implementation adds an AI-assisted incident reporting flow to the COMPLai platform. Users complete a basic incident form, receive follow-up questions generated from handbook policies, and get an auto-generated final report.
+This implementation adds an AI-assisted incident reporting flow to the COMPLai platform. Users complete a basic incident form, receive follow-up questions generated from handbook policies, and get an auto-generated Incident Report.
 
 ## Files Created/Modified
 
@@ -12,10 +12,10 @@ This implementation adds an AI-assisted incident reporting flow to the COMPLai p
 - `src/lib/ai/prompts.ts` - AI prompt templates for questions and report generation
 - `src/lib/ai/openai.ts` - OpenAI API wrapper
 - `src/app/api/incident-coach/next-questions/route.ts` - API endpoint for follow-up questions
-- `src/app/api/incident-coach/final-report/route.ts` - API endpoint for final report generation
+- `src/app/api/incident-coach/final-report/route.ts` - API endpoint for Incident Report generation
 - `src/data/handbook.md` - Company handbook content for AI reference
 - `src/components/incident/IncidentStepper.tsx` - Main stepper component
-- `src/components/incident/FollowUpQA.tsx` - Q&A component for AI follow-ups
+- `src/components/incident/FollowUpQA.tsx` - Q&A component for AI Follow-up Questions
 - `HANDOFF.md` - This documentation file
 
 ### Modified Files
@@ -56,7 +56,7 @@ Navigate to `/incident-coach/new` to test the new stepper.
 1. **Step 1**: Basic incident information (what happened, who was involved)
 2. **Step 2**: Additional details (location, date/time, attachments)
 3. **Step 3**: AI-generated follow-up questions based on handbook policies
-4. **Step 4**: Final report with risk assessment, recommendations, and export options
+4. **Step 4**: Incident Report with risk assessment, recommendations, and export options
 
 ### API Endpoints
 
@@ -140,7 +140,7 @@ Navigate to `/incident-coach/new` to test the new stepper.
 2. Complete Step 1 with incident details
 3. Complete Step 2 with location and time
 4. Answer AI follow-up questions in Step 3
-5. Review and export the final report in Step 4
+5. Review and export the Incident Report in Step 4
 
 ### API Testing
 
