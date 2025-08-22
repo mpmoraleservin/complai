@@ -351,7 +351,7 @@ ${message.body}
     } finally {
       setIsGeneratingReport(false)
     }
-  }, [basics, qaHistory, onComplete, apiKey])
+  }, [basics, qaHistory, onComplete, apiKey, calculateCost, totalTokenUsage, PRICING_REFERENCE, isDemoMode])
 
   const getNextQuestions = useCallback(async () => {
     // Validate that we have the required data before making the API call
@@ -431,7 +431,7 @@ ${message.body}
       setIsLoadingQuestions(false)
       setIsLoadingMoreQuestions(false)
     }
-  }, [basics, qaHistory, apiKey, isDemoMode, generateDemoAnswers, generateFinalReport])
+  }, [basics, qaHistory, apiKey, isDemoMode, generateDemoAnswers, generateFinalReport, calculateCost])
 
   const addQA = useCallback((question: string, answer: string) => {
     // If empty question/answer, it means we're ready to proceed (demo mode)
@@ -814,7 +814,7 @@ ${report.notification_requirements.map(requirement => `- ${requirement}`).join('
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-  }, [])
+  }, [basics.isConfidential])
 
   useEffect(() => {
     // Only detect demo mode if we're not in the API configuration step
