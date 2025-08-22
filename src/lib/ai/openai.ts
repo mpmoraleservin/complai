@@ -84,7 +84,7 @@ export class OpenAI {
     try {
       // Add timeout to prevent hanging requests
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout for complex reports
 
       const response = await fetch(`${this.baseURL}/chat/completions`, {
         method: 'POST',
